@@ -20,7 +20,7 @@
       "source": "**",
       "headers": [ {
         "key": "Access-Control-Allow-Origin",
-        "value": "www.owlbear.rodeo"
+        "value": "https://www.owlbear.rodeo"
       } ]
     } ]
   }
