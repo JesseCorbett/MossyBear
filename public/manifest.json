@@ -1,0 +1,12 @@
+{
+  "name": "Mossy Bear",
+  "version": "1.0.0-SNAPSHOT",
+  "manifest_version": 1,
+  "action": {
+    "title": "Mossy Bear",
+    "icon": "/bear.svg",
+    "popover": "/",
+    "height": 600,
+    "width": 400
+  }
+}
