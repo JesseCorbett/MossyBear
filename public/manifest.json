@@ -2,6 +2,8 @@
   "name": "Mossy Bear",
   "version": "1.0.0-SNAPSHOT",
   "manifest_version": 1,
+  "author": "Jesse Corbett",
+  "homepage_url": "https://jessecorbett.com",
   "action": {
     "title": "Mossy Bear",
     "icon": "/bear.svg",
