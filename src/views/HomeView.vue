@@ -6,14 +6,14 @@
         <input
             id="character-name"
             v-model="character.name"
-            @blur="setDoc(charDoc!, { name: $event.target!.value }, { merge: true })"
+            @blur="setDoc(charDoc!, { name: ($event.target as any).value }, { merge: true })"
         />
       </div>
       <label for="desc">Description</label>
       <textarea
           id="desc"
           v-model="character.description"
-          @blur="setDoc(charDoc!, { description: $event.target!.value }, { merge: true })"
+          @blur="setDoc(charDoc!, { description: ($event.target as any).value }, { merge: true })"
       ></textarea>
     </div>
 
@@ -22,7 +22,7 @@
       <textarea
           id="inventory"
           v-model="character.inventory"
-          @blur="setDoc(charDoc!, { inventory: $event.target!.value }, { merge: true })"
+          @blur="setDoc(charDoc!, { inventory: ($event.target as any).value }, { merge: true })"
       ></textarea>
     </div>
   </main>
