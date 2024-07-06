@@ -1,35 +1,56 @@
-@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+:root {
+  --background-primary: #fce4ca;
+  --background-secondary: #ffefe0;
+  --text-color: #66666b;
+  --accent-color: #7d7d7d;
+  --theme-primary: #fed9ca;
+  --theme-secondary: #c5c5c5;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+body {
+  padding: 12px 8px;
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow-x: scroll;
+  overflow-y: auto;
+  color: var(--text-color);
+  background: var(--background-secondary);
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+h1, h2, h3, h4, h5, h6, h1 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+.italics {
+  font-style: italic;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+input, textarea {
+  outline: none;
+  border: none;
+  background: none;
+  width: 100%;
+  height: fit-content;
+  color: var(--text-color);
+  resize: none;
+  padding: 4px;
+}
+
+textarea {
+  min-height: 50px;
+}
+
+input:focus, textarea:focus {
+  outline: 1px solid;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 500;
 }
