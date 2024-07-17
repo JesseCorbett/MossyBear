@@ -6,15 +6,45 @@
         <input
             id="character-name"
             v-model="character.name"
-            @blur="setDoc(charDoc!, { name: ($event.target as any).value }, { merge: true })"
+            @blur="updateField('name', ($event.target as any).value )"
         />
       </div>
       <label for="desc">Description</label>
       <textarea
           id="desc"
           v-model="character.description"
-          @blur="setDoc(charDoc!, { description: ($event.target as any).value }, { merge: true })"
+          @blur="updateField('description', ($event.target as any).value )"
       ></textarea>
+      <SliderInput
+          label="Health"
+          :max="character.maxHealth"
+          v-model="character.health"
+          @update:modelValue="updateField('health', $event )"
+      />
+      <div class="max-field">
+        <label for="max-health">max</label>
+        <input
+            id="max-health"
+            v-model="character.maxHealth"
+            type="number"
+            @blur="updateField('maxHealth', ($event.target as any).value)"
+        />
+      </div>
+      <SliderInput
+          label="Power"
+          :max="character.maxPower"
+          v-model="character.power"
+          @update:modelValue="updateField('power', $event )"
+      />
+      <div class="max-field">
+        <label for="max-power">max</label>
+        <input
+            id="max-power"
+            v-model="character.maxPower"
+            type="number"
+            @blur="updateField('maxPower', ($event.target as any).value)"
+        />
+      </div>
     </div>
 
     <div>
@@ -22,7 +52,7 @@
       <textarea
           id="inventory"
           v-model="character.inventory"
-          @blur="setDoc(charDoc!, { inventory: ($event.target as any).value }, { merge: true })"
+          @blur="updateField('inventory', ($event.target as any).value )"
       ></textarea>
     </div>
   </main>
@@ -37,6 +67,7 @@ import { computed, ref, watch } from "vue";
 import { useDocument, useFirestore } from "vuefire";
 import { doc, collection, getDoc, setDoc } from "firebase/firestore";
 import { signInAnonymously, getAuth } from "firebase/auth"
+import SliderInput from "@/components/SliderInput.vue";
 
 const roomId = ref<string>()
 const playerId = ref<string>()
@@ -55,12 +86,22 @@ const charDoc = computed(() => {
   return doc(collection(db, 'rooms/' + OBR.room.id + '/characters'), OBR.player.id)
 })
 
+async function updateField(field: string, value: any) {
+  const patch: any = {}
+  patch[field] = value
+  await setDoc(charDoc.value!, patch, { merge: true })
+}
+
 watch(charDoc, async (newDoc) => {
   if (newDoc) {
     const ref = await getDoc(newDoc)
     if (!ref.exists()) {
       await setDoc(newDoc, {
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        health: 10,
+        maxHealth: 10,
+        power: 10,
+        maxPower: 10
       })
     }
   }
@@ -96,5 +137,20 @@ main > div {
 
 #inventory {
   height: 122px;
+}
+
+.max-field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  flex-direction: row;
+  padding: 6px 0 12px;
+  gap: 10px;
+}
+
+.max-field input {
+  width: 40px;
+  text-align: end;
 }
 </style>
