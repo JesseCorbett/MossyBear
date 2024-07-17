@@ -6,7 +6,7 @@
   "homepage_url": "https://jessecorbett.com",
   "action": {
     "title": "Mossy Bear",
-    "icon": "/bear.svg",
+    "icon": "/icon.svg",
     "popover": "/",
     "height": 600,
     "width": 800
