@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <label :for="label">{{ label }}</label>
-    <div class="input" :id="label" :style="'--progress:' + ((model / max) * 100) + '%'" @click="setValue">
+    <div class="input" :id="label" :style="'--progress:' + ((model / parseInt(max)) * 100) + '%'" @click="setValue">
       {{model}}
     </div>
   </div>
@@ -10,14 +10,14 @@
 <script setup lang="ts">
 const props = defineProps<{
   label: string;
-  max: number;
+  max: string;
 }>()
 
 const model = defineModel<number>({ required: true })
 
 function setValue(event: MouseEvent) {
   const target = (event.target as Element).getBoundingClientRect();
-  const percent = ((event.clientX - target.left) / target.width) * props.max;
+  const percent = ((event.clientX - target.left) / target.width) * parseInt(props.max);
   model.value = Math.round(percent);
 }
 </script>

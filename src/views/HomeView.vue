@@ -15,6 +15,7 @@
           v-model="character.description"
           @blur="updateField('description', ($event.target as any).value )"
       ></textarea>
+
       <SliderInput
           label="Health"
           :max="character.maxHealth"
@@ -45,6 +46,8 @@
             @blur="updateField('maxPower', ($event.target as any).value)"
         />
       </div>
+
+      <StatSet label="Heart" v-model="character.heart"/>
     </div>
 
     <div>
@@ -68,12 +71,15 @@ import { useDocument, useFirestore } from "vuefire";
 import { doc, collection, getDoc, setDoc } from "firebase/firestore";
 import { signInAnonymously, getAuth } from "firebase/auth"
 import SliderInput from "@/components/SliderInput.vue";
+import StatSet from "@/components/StatSet.vue";
 
 const roomId = ref<string>()
 const playerId = ref<string>()
+const playerName = ref<string>()
 
 signInAnonymously(getAuth()).then(() => {
   OBR.onReady(async () => {
+    playerName.value = await OBR.player.getName()
     roomId.value = OBR.room.id;
     playerId.value = await OBR.player.getId()
   });
@@ -101,7 +107,11 @@ watch(charDoc, async (newDoc) => {
         health: 10,
         maxHealth: 10,
         power: 10,
-        maxPower: 10
+        maxPower: 10,
+        name: playerName.value || '',
+        description: '',
+        inventory: '',
+        heart: []
       })
     }
   }
