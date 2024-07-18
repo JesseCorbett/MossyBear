@@ -7,7 +7,7 @@
   "action": {
     "title": "Mossy Bear",
     "icon": "/icon.svg",
-    "popover": "/",
+    "popover": "/tags",
     "height": 600,
     "width": 800
   }

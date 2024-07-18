@@ -9,11 +9,11 @@ const props = defineProps<{
   label: string;
 }>()
 
-const model = defineModel<[{
+const model = defineModel<{
   name: string;
   description: string;
   exp: number;
-}]>({ required: true })
+}[]>({ required: true })
 
 
 </script>
