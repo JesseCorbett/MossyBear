@@ -35,7 +35,11 @@ const characterStore = useCharacterStore()
 async function rollStat(stat: number = 0, label: string = props.label) {
   const results = Array.from({ length: model.value.length + stat }, rollDie)
   let total = 0
-  results.forEach((die) => (total < die) ? total = die)
+  results.forEach((die) => {
+    if (die > total) {
+      total = die
+    }
+  })
   await OBR.notification.show(`${characterStore.playerName} rolled a ${total} for ${label}`)
 }
 
