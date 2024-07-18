@@ -2,7 +2,7 @@
   <div class="container">
     <div class="title">
       <div class="label">{{ label }}</div>
-      <div class="button" style="background-color: var(--background-primary)">
+      <div class="button" @click="rollStat()" style="background-color: var(--background-primary)">
         <img alt="dice" width="32" height="32" src="@/assets/dice-text.svg" />
       </div>
     </div>
@@ -10,7 +10,7 @@
       <div class="name">
         <input v-model="tag.name" placeholder="Tag Name"/>
         <button class="exp" @click="tag.exp++" @contextmenu.prevent="tag.exp--">{{ tag.exp }}</button>
-        <div class="button">
+        <div class="button" @click="rollStat(tag.exp, tag.name)">
           <img alt="dice" width="32" height="32" src="@/assets/dice-accent.svg" />
         </div>
       </div>
@@ -21,13 +21,27 @@
 </template>
 
 <script setup lang="ts">
-import type { CharacterTag } from "@/stores/character";
+import { type CharacterTag, useCharacterStore } from "@/stores/character";
+import OBR from "@owlbear-rodeo/sdk";
 
 const props = defineProps<{
   label: string;
 }>()
 
 const model = defineModel<CharacterTag[]>({ required: true })
+
+const characterStore = useCharacterStore()
+
+async function rollStat(stat: number = 0, label: string = props.label) {
+  const results = Array.from({ length: model.value.length + stat }, rollDie)
+  let total = 0
+  results.forEach((die) => total += die)
+  await OBR.notification.show(`${characterStore.playerName} rolled a ${total} for ${label}`)
+}
+
+function rollDie() {
+  return Math.floor(Math.random() * 6) + 1;
+}
 </script>
 
 <style scoped>
