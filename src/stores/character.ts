@@ -55,7 +55,7 @@ export const useCharacterStore = defineStore('characters', () => {
       console.log('Performing update')
       const charDoc = doc(roomCollection.value, currentSheetId.value)
       await setDoc(charDoc, sheet)
-    }, 1000)
+    }, 500)
   }
 
   async function bootstrapSheet() {
