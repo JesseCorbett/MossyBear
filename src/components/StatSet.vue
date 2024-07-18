@@ -1,38 +1,132 @@
 <template>
   <div class="container">
-    <label>{{ label }}</label>
+    <div class="title">
+      <div class="label">{{ label }}</div>
+      <div class="button" style="background-color: var(--background-primary)">
+        <img alt="dice" width="32" height="32" src="@/assets/dice-text.svg" />
+      </div>
+    </div>
+    <div class="tag" v-for="(tag, idx) in model" :key="idx">
+      <div class="name">
+        <input v-model="tag.name" placeholder="Tag Name"/>
+        <button class="exp" @click="tag.exp++" @contextmenu.prevent="tag.exp--">{{ tag.exp }}</button>
+        <div class="button">
+          <img alt="dice" width="32" height="32" src="@/assets/dice-accent.svg" />
+        </div>
+      </div>
+      <textarea v-model="tag.description" placeholder="Description"></textarea>
+    </div>
+    <button @click="model.push({ name: '', description: '', exp: 1 })">+</button>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { CharacterTag } from "@/stores/character";
+
 const props = defineProps<{
   label: string;
 }>()
 
-const model = defineModel<{
-  name: string;
-  description: string;
-  exp: number;
-}[]>({ required: true })
-
-
+const model = defineModel<CharacterTag[]>({ required: true })
 </script>
 
 <style scoped>
 .container {
-  display: grid;
-  grid-template-columns: 100px 1fr 75px;
+  --stat-color: var(--theme-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: start;
   gap: 1px;
 }
 
-.container > * {
-  background: var(--theme-primary);
+.title {
+  display: flex;
 }
 
-label {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
+.label {
+  background: var(--stat-color);
+  padding: 0 16px;
+  margin-left: auto;
+  width: fit-content;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
+.tag {
+  width: 100%;
+  background-color: var(--stat-color);
+}
+
+.tag .name {
+  width: 100%;
+  height: 36px;
+  background-color: var(--text-color);
+  display: flex;
+  flex-direction: row;
+}
+
+.tag textarea {
+  display: block;
+  width: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+  min-height: 80px;
+  height: fit-content;
+}
+
+.tag > div > * {
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--stat-color);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.tag input {
+  flex: 1;
+  padding: 0 16px;
+}
+
+.tag input:focus {
+  outline: none;
+  background: var(--accent-color);
+}
+
+.tag .exp {
+  width: 36px;
+  height: 36px;
+  background-color: var(--accent-color);
+  font-size: 18px;
+  border-left: 1px var(--text-color) solid;
+}
+
+.container button {
+  height: 36px;
+  border: none;
+  outline: none;
+  background: var(--text-color);
+  color: var(--stat-color);
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
 </style>

@@ -1,7 +1,13 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useCollection, useFirestore } from "vuefire";
 import { collection, doc, setDoc } from "firebase/firestore";
+
+export interface CharacterTag {
+  name: string;
+  description: string;
+  exp: number;
+}
 
 export interface CharacterSheet {
   createdAt: string;
@@ -9,11 +15,11 @@ export interface CharacterSheet {
   power: number;
   name: string;
   inventory: string;
-  heart: {
-    name: string;
-    description: string;
-    exp: number;
-  }[]
+  heart: CharacterTag[];
+  weird: CharacterTag[];
+  keen: CharacterTag[];
+  fell: CharacterTag[];
+  brawn: CharacterTag[];
 }
 
 export const useCharacterStore = defineStore('characters', () => {
@@ -61,7 +67,11 @@ export const useCharacterStore = defineStore('characters', () => {
       power: 10,
       name: playerName.value || '',
       inventory: '',
-      heart: []
+      heart: [],
+      weird: [],
+      keen: [],
+      fell: [],
+      brawn: []
     }
     await setDoc(charDoc, newSheet)
   }
