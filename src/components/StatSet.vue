@@ -156,6 +156,5 @@ function rollDie() {
 .tag textarea:focus {
   min-height: 60px;
   height: fit-content;
-  max-height: 120px;
 }
 </style>

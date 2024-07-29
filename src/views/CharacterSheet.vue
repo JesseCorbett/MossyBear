@@ -13,6 +13,13 @@
         </div>
       </div>
       <div id="links">
+        <div id="character-select">
+          <select v-model="characterStore.currentSheetId">
+            <option v-for="sheet in characterStore.sheets" :key="sheet.id" :value="sheet.id">
+              {{ sheet.name }}
+            </option>
+          </select>
+        </div>
         <RouterLink to="/tags">Tags</RouterLink>
         <RouterLink to="/guns">Guns</RouterLink>
       </div>
@@ -99,10 +106,29 @@ header {
   flex: 1;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: end;
   padding-right: 16px;
   gap: 8px;
+}
+
+#character-select {
+  width: 100%;
+  margin: 16px 16px auto auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
+#character-select select {
+  padding: 6px 8px;
+  outline: none;
+  border: none;
+  background: var(--background-secondary);
+  font-weight: bold;
+  color: var(--text-color);
 }
 
 #links > a {

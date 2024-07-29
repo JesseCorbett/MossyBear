@@ -23,6 +23,8 @@ export interface CharacterSheet {
 }
 
 export const useCharacterStore = defineStore('characters', () => {
+  const saving = ref<boolean>(false);
+
   const roomId = ref<string>()
   const isGm = ref<boolean>(false)
   const playerId = ref<string>()
@@ -50,11 +52,13 @@ export const useCharacterStore = defineStore('characters', () => {
   async function updateSheet(sheet: CharacterSheet) {
     clearTimeout(timeoutId as number | undefined)
     console.log('Queuing update')
+    saving.value = true
     timeoutId = setTimeout(async () => {
       if (!roomId.value || !currentSheetId.value || !roomCollection.value) return;
       console.log('Performing update')
       const charDoc = doc(roomCollection.value, currentSheetId.value)
       await setDoc(charDoc, sheet)
+      saving.value = false
     }, 500)
   }
 
@@ -77,6 +81,7 @@ export const useCharacterStore = defineStore('characters', () => {
   }
 
   return {
+    saving,
     roomId,
     isGm,
     playerId,
