@@ -110,7 +110,6 @@ function rollDie() {
   align-items: center;
   font-size: 18px;
   font-weight: 600;
-  text-transform: uppercase;
 }
 
 .title .exp {
