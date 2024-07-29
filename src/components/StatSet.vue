@@ -28,7 +28,7 @@ const props = defineProps<{
   label: string;
 }>()
 
-const model = defineModel<CharacterTag[]>({ required: true })
+const model = defineModel<CharacterTag[]>({ required: true });
 
 const characterStore = useCharacterStore()
 
@@ -40,7 +40,7 @@ async function rollStat(stat: number = 0, label: string = props.label) {
       total = die
     }
   })
-  await OBR.notification.show(`${characterStore.playerName} rolled a ${total} for ${label}`)
+  await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${label}`)
 }
 
 function rollDie() {
@@ -94,8 +94,9 @@ function rollDie() {
   width: 100%;
   padding: 4px;
   box-sizing: border-box;
-  min-height: 80px;
-  height: fit-content;
+  height: 10px;
+  min-height: 10px;
+  transition: min-height 0.1s ease;
 }
 
 .tag > div > * {
@@ -146,5 +147,15 @@ function rollDie() {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.tag .name:has(input:hover) + textarea,
+.tag .name:has(input:focus) + textarea,
+.tag textarea:hover,
+.tag textarea:active,
+.tag textarea:focus {
+  min-height: 60px;
+  height: fit-content;
+  max-height: 120px;
 }
 </style>
