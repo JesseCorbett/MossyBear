@@ -35,17 +35,35 @@ const characterStore = useCharacterStore()
 async function rollStat(stat: number = 0, label: string = props.label) {
   const results = Array.from({ length: model.value.length + stat }, rollDie)
   let total = 0
+  let resultString = ``
   results.forEach((die) => {
     if (die > total) {
       total = die
+      
     }
+    resultString += ` ${die},`
   })
-  await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${label}`)
+
+  if (total <= 0) { //TODO: implement "roll twice keep lowest"
+    total = rollDie()
+  }
+  
+  resultString = resultString.substring(0, resultString.length-1).concat(` `)
+  
+  if (total <= 3) {
+      await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${label}. [${resultString}]`, "WARNING")
+  }else if (total == 6) {
+      await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${label}. [${resultString}]`, "SUCCESS")
+  }else {
+      await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${label}. [${resultString}]`, "DEFAULT")
+  }
+
 }
 
 function rollDie() {
   return Math.floor(Math.random() * 6) + 1;
 }
+
 </script>
 
 <style scoped>

@@ -16,6 +16,7 @@ export interface CharacterGun {
   type: string;
   dmg: string;
   tags: GunTag[];
+  dice: number;
 }
 
 export interface GunTag {
@@ -93,9 +94,9 @@ export const useCharacterStore = defineStore('characters', () => {
       keen: [],
       fell: [],
       brawn: [],
-      primary: { name: '', exp: 1, tags: [], range: '', dmg: '', type: '' },
-      secondary: { name: '', exp: 1, tags: [], range: '', dmg: '', type: '' },
-      heavy: { name: '', exp: 1, tags: [], range: '', dmg: '', type: '' }
+      primary: { name: '', exp: 1, tags: [], range: '', dmg: '', type: '', dice: 4},
+      secondary: { name: '', exp: 1, tags: [], range: '', dmg: '', type: '', dice: 4},
+      heavy: { name: '', exp: 1, tags: [], range: '', dmg: '', type: '', dice: 4}
     }
     await setDoc(charDoc, newSheet)
   }

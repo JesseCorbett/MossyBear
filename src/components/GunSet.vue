@@ -5,8 +5,8 @@
         <div class="title">
           <input class="label" v-model="gun.name" placeholder="Gun Name"/>
           <button class="exp" @click="gun.exp++" @contextmenu.prevent="gun.exp--">{{ gun.exp }}</button>
-          <div class="button" @click="rollStat">
-            <img alt="dice" width="32" height="32" src="@/assets/d4.svg" />
+          <div class="button" @click="rollStat" @contextmenu.prevent="cycleDice">
+            <img alt="dice" width="32" height="32" :src='"@/assets/d"+gun.dice+".svg"' />
           </div>
         </div>
         <div class="tag" v-for="(tag, idx) in gun.tags" :key="idx">
@@ -44,7 +44,7 @@ const gun = defineModel<CharacterGun>({ required: true });
 const characterStore = useCharacterStore()
 
 async function rollStat() {
-  const results = Array.from({ length: gun.value.exp }, rollDie)
+  const results = Array.from({ length: gun.value.exp }, rollDie.bind(null, gun.value.dice))
   let total = 0
   results.forEach((die) => {
     if (die > total) {
@@ -54,8 +54,19 @@ async function rollStat() {
   await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${gun.value.name}`)
 }
 
-function rollDie() {
-  return Math.floor(Math.random() * 4) + 1;
+function rollDie(value: number) {
+  return Math.floor(Math.random() * value) + 1;
+}
+
+async function cycleDice() {
+  switch (gun.value.dice) {
+    case 4:
+    gun.value.dice = 8
+    case 8:
+    gun.value.dice = 12
+    case 12:
+    gun.value.dice = 4
+  }
 }
 </script>
 
