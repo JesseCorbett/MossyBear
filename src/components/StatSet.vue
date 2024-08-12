@@ -16,7 +16,7 @@
       </div>
       <textarea v-model="tag.description" placeholder="Description"></textarea>
     </div>
-    <button @click="model.push({ name: '', description: '', exp: 1 })">+</button>
+    <button class="add-button" @click="model.push({ name: '', description: '', exp: 1 })">+</button>
   </div>
 </template>
 
@@ -89,7 +89,6 @@ function deleteTag(index: number, name: string) {
   align-items: stretch;
   justify-content: start;
   gap: 1px;
-  padding-top: 5px
 }
 
 .container:last-child {
@@ -209,5 +208,9 @@ function deleteTag(index: number, name: string) {
 .tag textarea:focus {
   min-height: 100px;
   transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.125);
+}
+
+.add-button {
+  z-index: 1;
 }
 </style>
