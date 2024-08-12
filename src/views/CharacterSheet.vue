@@ -65,13 +65,13 @@ header {
 #summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 20px 16px;
+  gap: 2px;
+  padding: 16px 16px;
   width: 60%;
 }
 
 #character-name {
-  background: var(--background-secondary);
+  background: var(--theme-primary);
   font-size: 32px;
   font-weight: 600;
   grid-column: span 2;
@@ -80,26 +80,25 @@ header {
 
 .summary-stat {
   grid-column: span 1;
-  padding: 2px 8px;
+  padding: 1px 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 16px;
   text-transform: uppercase;
-  background: var(--text-color);
 }
 
+
 .summary-stat > * {
-  color: var(--theme-primary);
-  font-size: 20px;
+  font-size: 15px;
   flex: 1;
   text-align: center;
-  padding: 0;
+  background-color: var(--theme-secondary);
+  padding: 5px
 }
 
 .summary-stat:last-child > * {
-  color: var(--theme-secondary);
+  background-color: var(--theme-tertiary);
 }
 
 #links {
@@ -126,14 +125,14 @@ header {
   padding: 6px 8px;
   outline: none;
   border: none;
-  background: var(--background-secondary);
+  background: var(--theme-primary);
   font-weight: bold;
   color: var(--text-color);
 }
 
 #links > a {
   flex: 1;
-  background: linear-gradient(to bottom, transparent, transparent 70%, var(--background-secondary) 70%, var(--background-secondary));
+  background: linear-gradient(to bottom, transparent, transparent 70%, var(--theme-primary) 70%, var(--theme-primary));
   text-transform: uppercase;
   font-size: 16px;
   color: var(--text-color);
@@ -144,16 +143,17 @@ header {
 }
 
 #links > a.router-link-exact-active {
-  background: var(--background-secondary);
+  background: var(--theme-primary);
   text-decoration: underline;
 }
 
 main {
   box-sizing: border-box;
-  background: var(--background-secondary);
+  border-top: 2px solid var(--theme-primary);
   width: 100%;
   flex: 1;
-  padding: 16px;
-  overflow: auto;
+  padding: 10px 10px;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 </style>

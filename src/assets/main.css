@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 :root {
-  --background-primary: #fce4ca;
-  --background-secondary: #ffefe0;
-  --text-color: #66666b;
-  --accent-color: #7d7d7d;
-  --theme-primary: #fed9ca;
-  --theme-secondary: #c5c5c5;
+  --background: #fffbf7;
+  --background-second: #f7f0eb;
+  --text-color: #28282c;
+  --theme-primary: #ffefe0;
+  --theme-secondary: #fed9ca;
+  --theme-tertiary: #c5c5c5;
   scrollbar-width: none;
 }
 
@@ -19,16 +19,14 @@ body {
   overflow-x: scroll;
   overflow-y: auto;
   color: var(--text-color);
-  background: var(--background-primary);
+  background: var(--background);
   font-family: Roboto, sans-serif;
   font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6, h1, label {
-  font-family: "Open Sans", sans-serif;
+  font-family: Roboto, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.5px;
-  transform: scaleY(115%);
 }
 
 .italics {
@@ -51,7 +49,7 @@ textarea {
 }
 
 input:focus, textarea:focus {
-  outline: 1px solid;
+  outline: thin inset var(--text-color);
 }
 
 label {

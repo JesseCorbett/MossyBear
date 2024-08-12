@@ -5,13 +5,13 @@
         <div class="title">
           <input class="label" v-model="gun.name" placeholder="Gun Name"/>
           <button class="exp" @click="gun.exp++" @contextmenu.prevent="gun.exp--">{{ gun.exp }}</button>
-          <div class="button" @click="rollStat" @contextmenu.prevent="cycleDice">
-            <img alt="dice" width="32" height="32" :src='"@/assets/d"+gun.dice+".svg"' />
+          <div class="button" @click="rollStat" @contextmenu.prevent="cycleDice(gun)">
+            <img alt="dice" width="32" height="32" :src='"/src/assets/d"+gun.dice+".svg"'/>
           </div>
         </div>
         <div class="tag" v-for="(tag, idx) in gun.tags" :key="idx">
           <div class="name">
-            <input v-model="tag.name" placeholder="Tag Name"/>
+            <input v-model="tag.name" @contextmenu.prevent="deleteTag(tag.name, gun)" placeholder="Tag Name"/>
           </div>
           <textarea v-model="tag.description" placeholder="Description"></textarea>
         </div>
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { type CharacterGun, type CharacterTag, useCharacterStore } from "@/stores/character";
 import OBR from "@owlbear-rodeo/sdk";
+import type { ModelRef } from "vue";
 
 const gun = defineModel<CharacterGun>({ required: true });
 
@@ -58,16 +59,39 @@ function rollDie(value: number) {
   return Math.floor(Math.random() * value) + 1;
 }
 
-async function cycleDice() {
-  switch (gun.value.dice) {
+async function cycleDice(theGun) {
+  switch (theGun.dice) {
     case 4:
-    gun.value.dice = 8
+      theGun.dice = 8
+    break
+
     case 8:
-    gun.value.dice = 12
+      theGun.dice = 12
+    break
+    
     case 12:
-    gun.value.dice = 4
+      theGun.dice = 4
+    break
+
+    default:
+      theGun.dice = 4
+    break
   }
 }
+
+function deleteTag(name: string = ``, gun) {
+  let deleteIndex;      
+  deleteIndex = gun.tags.findIndex((item) => {
+    return item.name == name
+    })
+    let result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
+      
+    if (result) {
+      gun.tags.splice(deleteIndex,1)
+    }
+
+  }
+
 </script>
 
 <style scoped>
@@ -78,13 +102,13 @@ async function cycleDice() {
 
 .attributes {
   margin: auto 0 0;
-  background: var(--background-primary);
+  background: var(--background);
   font-size: 14px;
   border-spacing: 4px;
 }
 
 .attributes > tr {
-  color: var(--accent-color);
+  color: var(--theme-tertiary);
 }
 
 .attributes > tr > td:first-child {
@@ -109,10 +133,12 @@ async function cycleDice() {
 .title {
   display: flex;
   margin-bottom: -1px;
+
 }
 
+
 .label {
-  background: var(--background-primary);
+  background: var(--background);
   padding: 0 16px;
   flex: 1;
   height: 100%;
@@ -123,52 +149,64 @@ async function cycleDice() {
   font-weight: 600;
 }
 
+.label:focus {
+  outline: none;
+}
+
 .title .exp {
-  width: 36px;
-  height: 36px;
-  background-color: var(--accent-color);
+  width: 35px;
+  height: 35px;
+  background-color: var(--theme-secondary);
   font-size: 18px;
-  border-left: 1px var(--text-color) solid;
+  margin-top: 1px;
+  border-right: 1px var(--text-color) solid;
 }
 
 .container button {
   height: 36px;
+  width: 36px;
   border: none;
   outline: none;
-  background: var(--text-color);
-  color: var(--background-primary);
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: var(--theme-secondary);
+  color: var(--text-color);
+  font-size: 30px;
+  #display: flex;
+  align-content: center;
+  margin-bottom: -45px;
+  margin-top: -2px;
 }
 
 .tag {
   width: 100%;
-  background-color: var(--background-primary);
 }
 
 .tag .name {
   width: 100%;
   height: 36px;
-  background-color: var(--text-color);
-  color: var(--background-primary);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) -25%, var(--theme-secondary) 66%);
   display: flex;
   flex-direction: row;
-}
-
-.tag .name input::placeholder {
-  color: var(--background-primary);
+  border-bottom: thin solid var(--background-second);
 }
 
 .tag textarea {
   display: block;
   width: 100%;
-  padding: 4px;
+  padding: 3px;
   box-sizing: border-box;
-  height: 10px;
-  min-height: 10px;
-  transition: min-height 0.1s ease;
+  height: 5px;
+  min-height: 5px;
+  transition: all 0.15s ease-out;
+  background-color: var(--background-second);
+  font-family: Roboto, "sans serif";
+  font-size: 85%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--background-second) var(--background);
+}
+
+.tag textarea:focus {
+  outline: var(--background-second) solid thin;
+  outline-offset: -1px;
 }
 
 .tag > div > * {
@@ -177,7 +215,6 @@ async function cycleDice() {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--stat-color);
   font-size: 16px;
   font-weight: 400;
 }
@@ -189,8 +226,22 @@ async function cycleDice() {
 
 .tag input:focus {
   outline: none;
-  background: var(--accent-color);
+  background: var(--theme-secondary);
 }
+
+.tag .exp {
+  width: 35px;
+  height: 35px;
+  background-color: var(--theme-secondary);
+  font-size: 18px;
+  margin-top: 1px;
+  border-right: 1px var(--text-color) solid;
+}
+
+.tag .exp:hover {
+  background-color: var(--background);
+}
+
 
 .button {
   width: 36px;
@@ -206,7 +257,8 @@ async function cycleDice() {
 .tag textarea:hover,
 .tag textarea:active,
 .tag textarea:focus {
-  min-height: 60px;
+  min-height: 100px;
   height: fit-content;
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.125);
 }
 </style>

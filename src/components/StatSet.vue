@@ -8,7 +8,7 @@
     </div>
     <div class="tag" v-for="(tag, idx) in model" :key="idx">
       <div class="name">
-        <input v-model="tag.name" placeholder="Tag Name"/>
+        <input v-model="tag.name" placeholder="Tag Name" @contextmenu.prevent="deleteTag(tag.name, label)"/>
         <button class="exp" @click="tag.exp++" @contextmenu.prevent="tag.exp--">{{ tag.exp }}</button>
         <div class="button" @click="rollStat(tag.exp, tag.name)">
           <img alt="dice" width="32" height="32" src="@/assets/dice-accent.svg" />
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { type CharacterTag, useCharacterStore } from "@/stores/character";
 import OBR from "@owlbear-rodeo/sdk";
+import { debug, log } from "console";
 
 const props = defineProps<{
   label: string;
@@ -44,8 +45,16 @@ async function rollStat(stat: number = 0, label: string = props.label) {
     resultString += ` ${die},`
   })
 
-  if (total <= 0) { //TODO: implement "roll twice keep lowest"
-    total = rollDie()
+  if (total <= 0) { // Roll twice take lower
+    let lowDie = 6
+    total = 6
+    for (let i = 0; i <= 1; i++) {
+      lowDie = rollDie()           
+      if (total >= lowDie) {       
+        total = lowDie
+      }
+      resultString += ` ${lowDie},`
+    }
   }
   
   resultString = resultString.substring(0, resultString.length-1).concat(` `)
@@ -64,16 +73,82 @@ function rollDie() {
   return Math.floor(Math.random() * 6) + 1;
 }
 
+function deleteTag(name: string = ``, category: string = ``) {
+  let deleteIndex;
+  let result = false;
+
+  switch (category) {
+    case 'Brawn':
+      deleteIndex = characterStore.currentSheet?.brawn.findIndex((item) => {
+        return item.name == name
+      })
+      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
+      if (result) {
+        characterStore.currentSheet?.brawn.splice(deleteIndex,1)
+      }
+      break
+
+      case 'Keen':
+      deleteIndex = characterStore.currentSheet?.keen.findIndex((item) => {
+        return item.name == name
+      })
+      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
+      if (result) {
+        characterStore.currentSheet?.keen.splice(deleteIndex,1)
+      }
+      break
+
+    case 'Heart':
+      deleteIndex = characterStore.currentSheet?.heart.findIndex((item) => {
+        return item.name == name
+      })
+      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
+      if (result) {
+        characterStore.currentSheet?.heart.splice(deleteIndex,1)
+      }
+      break
+      
+    case 'Weird':
+      deleteIndex = characterStore.currentSheet?.weird.findIndex((item) => {
+        return item.name == name
+      })
+      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
+      if (result) {
+        characterStore.currentSheet?.weird.splice(deleteIndex,1)
+      }
+      break
+
+    case 'Fell':
+      deleteIndex = characterStore.currentSheet?.fell.findIndex((item) => {
+        return item.name == name
+      })
+      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
+      if (result) {
+        characterStore.currentSheet?.fell.splice(deleteIndex,1)
+      }
+      break
+
+      default:
+      OBR.notification.show(`Cant find Tag! Category: ${category}.`)
+    }
+  }
+
 </script>
 
 <style scoped>
 .container {
-  --stat-color: var(--theme-primary);
+  --stat-color: var(--theme-tertiary);
+  min-width: 250px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: start;
   gap: 1px;
+  padding-top: 5px
+}
+
+.container:last-child {
+  grid-column: 3;
 }
 
 .title {
@@ -96,25 +171,35 @@ function rollDie() {
 
 .tag {
   width: 100%;
-  background-color: var(--stat-color);
 }
 
 .tag .name {
   width: 100%;
   height: 36px;
-  background-color: var(--text-color);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) -25%, var(--stat-color) 66%);
   display: flex;
   flex-direction: row;
+  border-bottom: thin solid var(--stat-color);
 }
 
 .tag textarea {
   display: block;
   width: 100%;
-  padding: 4px;
+  padding: 3px;
   box-sizing: border-box;
-  height: 10px;
-  min-height: 10px;
-  transition: min-height 0.1s ease;
+  height: 5px;
+  min-height: 5px;
+  transition: all 0.15s ease-out;
+  background-color: var(--background-second);
+  font-family: Roboto, "sans serif";
+  font-size: 85%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--stat-color) var(--background);
+}
+
+.tag textarea:focus {
+  outline: var(--stat-color) solid thin;
+  outline-offset: -1px;
 }
 
 .tag > div > * {
@@ -123,7 +208,6 @@ function rollDie() {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--stat-color);
   font-size: 16px;
   font-weight: 400;
 }
@@ -135,27 +219,34 @@ function rollDie() {
 
 .tag input:focus {
   outline: none;
-  background: var(--accent-color);
+  background: var(--stat-color);
 }
 
 .tag .exp {
-  width: 36px;
-  height: 36px;
-  background-color: var(--accent-color);
+  width: 35px;
+  height: 35px;
+  background-color: var(--stat-color);
   font-size: 18px;
-  border-left: 1px var(--text-color) solid;
+  margin-top: 1px;
+  border-right: 1px var(--text-color) solid;
+}
+
+.tag .exp:hover {
+  background-color: var(--background);
 }
 
 .container button {
   height: 36px;
+  width: 36px;
   border: none;
   outline: none;
-  background: var(--text-color);
-  color: var(--stat-color);
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: var(--background-second);
+  color: var(--text-color);
+  font-size: 30px;
+  #display: flex;
+  align-content: center;
+  margin-bottom: -45px;
+  margin-top: -2px;
 }
 
 .button {
@@ -172,7 +263,7 @@ function rollDie() {
 .tag textarea:hover,
 .tag textarea:active,
 .tag textarea:focus {
-  min-height: 60px;
-  height: fit-content;
+  min-height: 100px;
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.125);
 }
 </style>

@@ -24,7 +24,8 @@ const sheet = defineModel<CharacterSheet>({
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
   grid-template-rows: auto;
-  gap: 32px 16px;
+  gap: 50px 16px;
+  padding: 10px;
 }
 
 #inventory {
@@ -36,7 +37,7 @@ const sheet = defineModel<CharacterSheet>({
 #inventory label {
   display: block;
   margin: 0 0 0 auto;
-  background: var(--theme-secondary);
+  background: var(--background-second);
   padding: 6px 12px;
   font-size: 18px;
   font-weight: 600;
@@ -44,10 +45,20 @@ const sheet = defineModel<CharacterSheet>({
 
 #inventory textarea {
   display: block;
-  background: var(--theme-secondary);
   width: 100%;
-  flex: 1;
-  min-height: 120px;
+  height: 250px;
+  padding: 10px;
   box-sizing: border-box;
+  transition: all 0.15s ease-out;
+  background-color: var(--background-second);
+  font-family: Roboto, "sans serif";
+  font-size: 85%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--background) var(--background-second);
+}
+
+#inventory textarea:focus {
+  outline: var(--theme-primary) solid thin;
+  outline-offset: -1px;
 }
 </style>
