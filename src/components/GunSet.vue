@@ -156,7 +156,7 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 .title .exp {
   width: 35px;
   height: 35px;
-  background-color: var(--theme-secondary);
+  background-color: var(--theme-tertiary);
   font-size: 18px;
   margin-top: 1px;
   border-right: 1px var(--text-color) solid;
@@ -167,7 +167,7 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
   width: 36px;
   border: none;
   outline: none;
-  background-color: var(--theme-secondary);
+  background-color: var(--theme-tertiary);
   color: var(--text-color);
   font-size: 30px;
   #display: flex;
@@ -183,7 +183,7 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 .tag .name {
   width: 100%;
   height: 36px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) -25%, var(--theme-secondary) 66%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) -25%, var(--theme-tertiary) 66%);
   display: flex;
   flex-direction: row;
   border-bottom: thin solid var(--background-second);
@@ -226,13 +226,13 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 
 .tag input:focus {
   outline: none;
-  background: var(--theme-secondary);
+  background: var(--theme-tertiary);
 }
 
 .tag .exp {
   width: 35px;
   height: 35px;
-  background-color: var(--theme-secondary);
+  background-color: var(--theme-tertiary);
   font-size: 18px;
   margin-top: 1px;
   border-right: 1px var(--text-color) solid;
