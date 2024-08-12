@@ -59,7 +59,7 @@ function rollDie(value: number) {
   return Math.floor(Math.random() * value) + 1;
 }
 
-async function cycleDice(theGun) {
+async function cycleDice(theGun: CharacterGun) {
   switch (theGun.dice) {
     case 4:
       theGun.dice = 8
@@ -68,7 +68,7 @@ async function cycleDice(theGun) {
     case 8:
       theGun.dice = 12
     break
-    
+
     case 12:
       theGun.dice = 4
     break
@@ -79,13 +79,13 @@ async function cycleDice(theGun) {
   }
 }
 
-function deleteTag(name: string = ``, gun) {
-  let deleteIndex;      
+function deleteTag(name: string = ``, gun: CharacterGun) {
+  let deleteIndex;
   deleteIndex = gun.tags.findIndex((item) => {
     return item.name == name
     })
     let result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
-      
+
     if (result) {
       gun.tags.splice(deleteIndex,1)
     }
