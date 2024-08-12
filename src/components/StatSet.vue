@@ -142,7 +142,7 @@ function deleteTag(index: number, name: string) {
 }
 
 .tag textarea:focus {
-  outline: var(--stat-color) solid thin;
+  outline: var(--text-color) solid thin;
   outline-offset: -1px;
 }
 

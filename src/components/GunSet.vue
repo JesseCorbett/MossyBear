@@ -205,7 +205,7 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 }
 
 .tag textarea:focus {
-  outline: var(--background-second) solid thin;
+  outline: var(--text-color) solid thin;
   outline-offset: -1px;
 }
 

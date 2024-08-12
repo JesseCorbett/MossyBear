@@ -32,11 +32,10 @@ signInAnonymously(getAuth()).then(() => {
 </script>
 
 <style>
-body {
-  background: url(src/assets/SYSTEM.svg) var(--background);
+ body{
+  background-image: url(/src/assets/SYSTEM.svg);
   background-position: center;
   background-size: 80%;
   background-repeat: no-repeat;
-  background-blend-mode: overlay;
  }
  </style>
