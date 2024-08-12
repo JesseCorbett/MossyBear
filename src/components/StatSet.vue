@@ -8,7 +8,7 @@
     </div>
     <div class="tag" v-for="(tag, idx) in model" :key="idx">
       <div class="name">
-        <input v-model="tag.name" placeholder="Tag Name" @contextmenu.prevent="deleteTag(tag.name, label)"/>
+        <input v-model="tag.name" placeholder="Tag Name" @contextmenu.prevent="deleteTag(idx, tag.name)"/>
         <button class="exp" @click="tag.exp++" @contextmenu.prevent="tag.exp--">{{ tag.exp }}</button>
         <div class="button" @click="rollStat(tag.exp, tag.name)">
           <img alt="dice" width="32" height="32" src="@/assets/dice-accent.svg" />
@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import { type CharacterTag, useCharacterStore } from "@/stores/character";
 import OBR from "@owlbear-rodeo/sdk";
-import { debug, log } from "console";
 
 const props = defineProps<{
   label: string;
@@ -40,7 +39,7 @@ async function rollStat(stat: number = 0, label: string = props.label) {
   results.forEach((die) => {
     if (die > total) {
       total = die
-      
+
     }
     resultString += ` ${die},`
   })
@@ -49,16 +48,16 @@ async function rollStat(stat: number = 0, label: string = props.label) {
     let lowDie = 6
     total = 6
     for (let i = 0; i <= 1; i++) {
-      lowDie = rollDie()           
-      if (total >= lowDie) {       
+      lowDie = rollDie()
+      if (total >= lowDie) {
         total = lowDie
       }
       resultString += ` ${lowDie},`
     }
   }
-  
+
   resultString = resultString.substring(0, resultString.length-1).concat(` `)
-  
+
   if (total <= 3) {
       await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${label}. [${resultString}]`, "WARNING")
   }else if (total == 6) {
@@ -73,65 +72,11 @@ function rollDie() {
   return Math.floor(Math.random() * 6) + 1;
 }
 
-function deleteTag(name: string = ``, category: string = ``) {
-  let deleteIndex;
-  let result = false;
-
-  switch (category) {
-    case 'Brawn':
-      deleteIndex = characterStore.currentSheet?.brawn.findIndex((item) => {
-        return item.name == name
-      })
-      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
-      if (result) {
-        characterStore.currentSheet?.brawn.splice(deleteIndex,1)
-      }
-      break
-
-      case 'Keen':
-      deleteIndex = characterStore.currentSheet?.keen.findIndex((item) => {
-        return item.name == name
-      })
-      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
-      if (result) {
-        characterStore.currentSheet?.keen.splice(deleteIndex,1)
-      }
-      break
-
-    case 'Heart':
-      deleteIndex = characterStore.currentSheet?.heart.findIndex((item) => {
-        return item.name == name
-      })
-      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
-      if (result) {
-        characterStore.currentSheet?.heart.splice(deleteIndex,1)
-      }
-      break
-      
-    case 'Weird':
-      deleteIndex = characterStore.currentSheet?.weird.findIndex((item) => {
-        return item.name == name
-      })
-      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
-      if (result) {
-        characterStore.currentSheet?.weird.splice(deleteIndex,1)
-      }
-      break
-
-    case 'Fell':
-      deleteIndex = characterStore.currentSheet?.fell.findIndex((item) => {
-        return item.name == name
-      })
-      result = window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)
-      if (result) {
-        characterStore.currentSheet?.fell.splice(deleteIndex,1)
-      }
-      break
-
-      default:
-      OBR.notification.show(`Cant find Tag! Category: ${category}.`)
-    }
+function deleteTag(index: number, name: string) {
+  if (window.confirm(`This will delete the tag \"${name}\" forever with no way to restore it! Are you sure?`)) {
+    model.value.splice(index, 1)
   }
+}
 
 </script>
 
@@ -191,7 +136,7 @@ function deleteTag(name: string = ``, category: string = ``) {
   min-height: 5px;
   transition: all 0.15s ease-out;
   background-color: var(--background-second);
-  font-family: Roboto, "sans serif";
+  font-family: Roboto, sans-serif;
   font-size: 85%;
   scrollbar-width: thin;
   scrollbar-color: var(--stat-color) var(--background);
@@ -243,7 +188,6 @@ function deleteTag(name: string = ``, category: string = ``) {
   background-color: var(--background-second);
   color: var(--text-color);
   font-size: 30px;
-  #display: flex;
   align-content: center;
   margin-bottom: -45px;
   margin-top: -2px;
