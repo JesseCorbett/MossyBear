@@ -6,7 +6,7 @@
           <input class="label" v-model="gun.name" placeholder="Gun Name"/>
           <button class="exp" @click="gun.exp++" @contextmenu.prevent="gun.exp--">{{ gun.exp }}</button>
           <div class="button" @click="rollStat" @contextmenu.prevent="cycleDice(gun)">
-            <img alt="dice" width="32" height="32" :src='"/src/assets/d"+gun.dice+".svg"'/>
+            <img alt="dice" width="32" height="32" :src='"/d"+gun.dice+".svg"'/>
           </div>
         </div>
         <div class="tag" v-for="(tag, idx) in gun.tags" :key="idx">

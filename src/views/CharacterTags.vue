@@ -5,10 +5,10 @@
     <StatSet label="Heart" v-model="sheet.heart"/>
     <StatSet label="Weird" v-model="sheet.weird" style="--stat-color: var(--theme-secondary)"/>
     <div id="diceRolls">
-      <button @click="diceRoll(4)"><img alt="dice" width="32" height="32" src="@/assets/d4.svg" /></button>
+      <button @click="diceRoll(4)"><img alt="dice" width="32" height="32" src="/d4.svg" /></button>
       <button @click="diceRoll(6)"><img alt="dice" width="32" height="32" src="@/assets/dice-text.svg" /></button>
-      <button @click="diceRoll(8)"><img alt="dice" width="32" height="32" src="@/assets/d8.svg" /></button>
-      <button @click="diceRoll(12)"><img alt="dice" width="32" height="32" src="@/assets/d12.svg" /></button>
+      <button @click="diceRoll(8)"><img alt="dice" width="32" height="32" src="/d8.svg" /></button>
+      <button @click="diceRoll(12)"><img alt="dice" width="32" height="32" src="/d12.svg" /></button>
     </div>
     <StatSet label="Fell" v-model="sheet.fell"/>
   </div>
