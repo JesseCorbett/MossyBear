@@ -33,6 +33,13 @@ const model = defineModel<CharacterTag[]>({ required: true });
 const characterStore = useCharacterStore()
 
 async function rollStat(stat: number = 0, label: string = props.label) {
+  let diceString : string | null = window.prompt("🞚 How many additional dice you want to roll? 🞚 \n ","0")
+  let dice : number = 0;
+  if (diceString) {
+    dice = parseInt(diceString);
+    stat += dice;
+  }
+
   const results = Array.from({ length: model.value.length + stat }, rollDie)
   let total = 0
   let resultString = ``
@@ -109,8 +116,9 @@ function deleteTag(index: number, name: string) {
   justify-content: end;
   align-items: center;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 .tag {
@@ -129,7 +137,7 @@ function deleteTag(index: number, name: string) {
 .tag textarea {
   display: block;
   width: 100%;
-  padding: 3px;
+  padding: 5px;
   box-sizing: border-box;
   height: 5px;
   min-height: 5px;
@@ -159,6 +167,7 @@ function deleteTag(index: number, name: string) {
 .tag input {
   flex: 1;
   padding: 0 16px;
+  text-overflow: "…";
 }
 
 .tag input:focus {

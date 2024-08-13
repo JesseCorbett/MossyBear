@@ -27,7 +27,7 @@ const sheet = defineModel<CharacterSheet>({
 const characterStore = useCharacterStore()
 
 function diceRoll(type : number){
-  let diceString : string | null = window.prompt("How many dice do you want to roll?","1")
+  let diceString : string | null = window.prompt("🞚 How many dice do you want to roll? 🞚 \n ","1")
   let dice : number = 1;
   if (diceString) {
     dice = parseInt(diceString);

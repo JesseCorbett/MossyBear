@@ -37,7 +37,7 @@ const sheet = defineModel<CharacterSheet>({
 #inventory label {
   display: block;
   margin: 0 0 0 auto;
-  background: var(--background-second);
+  background: var(--theme-tertiary);
   padding: 6px 12px;
   font-size: 18px;
   font-weight: 600;
@@ -46,15 +46,14 @@ const sheet = defineModel<CharacterSheet>({
 #inventory textarea {
   display: block;
   width: 100%;
-  height: 250px;
+  height: 200px;
   padding: 10px;
   box-sizing: border-box;
-  transition: all 0.15s ease-out;
   background-color: var(--background-second);
   font-family: Roboto, "sans serif";
   font-size: 85%;
   scrollbar-width: thin;
-  scrollbar-color: var(--background) var(--background-second);
+  scrollbar-color: var(--theme-tertiary) var(--background-second);
 }
 
 #inventory textarea:focus {

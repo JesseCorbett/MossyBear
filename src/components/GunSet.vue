@@ -44,15 +44,44 @@ const gun = defineModel<CharacterGun>({ required: true });
 
 const characterStore = useCharacterStore()
 
-async function rollStat() {
-  const results = Array.from({ length: gun.value.exp }, rollDie.bind(null, gun.value.dice))
+async function rollStat() {  
+  let diceString : string | null = window.prompt("🞚 How many additional dice you want to roll? 🞚 \n ","0")
+  let dice : number = 0;
+  if (diceString) {
+    dice = parseInt(diceString);
+  }
+
+  const results = Array.from({ length: (gun.value.exp + dice) }, rollDie.bind(null, (gun.value.dice)))
   let total = 0
+  let resultString = ``
   results.forEach((die) => {
     if (die > total) {
       total = die
+
     }
+    resultString += ` ${die},`
   })
-  await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} for ${gun.value.name}`)
+  if (total <= 0) { // Roll twice take lower
+    let lowDie = 6
+    total = 6
+    for (let i = 0; i <= 1; i++) {
+      lowDie = rollDie(gun.value.dice)
+      if (total >= lowDie) {
+        total = lowDie
+      }
+      resultString += ` ${lowDie},`
+    }
+  }
+
+  resultString = resultString.substring(0, resultString.length-1).concat(` `)
+
+  if (total == 1) {
+      await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} with ${gun.value.name}. [${resultString}]`, "WARNING")
+  }else if (total == gun.value.dice) {
+      await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} with ${gun.value.name}. [${resultString}]`, "SUCCESS")
+  }else {
+      await OBR.notification.show(`${characterStore.currentSheet?.name || characterStore.playerName} rolled a ${total} with ${gun.value.name}. [${resultString}]`, "DEFAULT")
+  }
 }
 
 function rollDie(value: number) {
@@ -96,8 +125,13 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 
 <style scoped>
 .wrapper {
+  --stat-color: var(--theme-tertiary);
+  min-width: 250px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: start;
+  gap: 1px;
 }
 
 .attributes {
@@ -117,7 +151,7 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 }
 
 .attributes input {
-  width: 64px;
+  width: 128px;
   padding: 0;
   outline: none;
 }
@@ -167,10 +201,9 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
   width: 36px;
   border: none;
   outline: none;
-  background-color: var(--theme-tertiary);
+  background-color: var(--background-second);
   color: var(--text-color);
   font-size: 30px;
-  #display: flex;
   align-content: center;
   margin-bottom: -45px;
   margin-top: -2px;
@@ -192,16 +225,16 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
 .tag textarea {
   display: block;
   width: 100%;
-  padding: 3px;
+  padding: 5px;
   box-sizing: border-box;
   height: 5px;
   min-height: 5px;
   transition: all 0.15s ease-out;
   background-color: var(--background-second);
-  font-family: Roboto, "sans serif";
+  font-family: Roboto, sans-serif;
   font-size: 85%;
   scrollbar-width: thin;
-  scrollbar-color: var(--background-second) var(--background);
+  scrollbar-color: var(--theme-tertiary) var(--background);
 }
 
 .tag textarea:focus {

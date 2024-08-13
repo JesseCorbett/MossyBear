@@ -74,6 +74,8 @@ header {
   background: var(--theme-primary);
   font-size: 32px;
   font-weight: 600;
+  text-transform: uppercase;
+  font-family: 'Roboto Condensed', sans-serif;
   grid-column: span 2;
   box-sizing: border-box;
 }
