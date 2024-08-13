@@ -128,7 +128,7 @@ function deleteTag(name: string = ``, gun: CharacterGun) {
   --stat-color: var(--theme-tertiary);
   min-width: 250px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: stretch;
   justify-content: start;
   gap: 1px;

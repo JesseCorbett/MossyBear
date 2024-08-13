@@ -46,7 +46,7 @@ const sheet = defineModel<CharacterSheet>({
 #inventory textarea {
   display: block;
   width: 100%;
-  height: 200px;
+  height: 250px;
   padding: 10px;
   box-sizing: border-box;
   background-color: var(--background-second);
